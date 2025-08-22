@@ -1,0 +1,5 @@
+*
+!.gitignore
+!sample/
+!sample/example.pdf
+!sample/example.png
