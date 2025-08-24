@@ -18,8 +18,7 @@ return new class extends Migration
             $table->foreignId('to_warehouse_id')->constrained('warehouses');
             $table->foreignId('inventory_item_id')->constrained();
             $table->integer('quantity');
-            $table->enum('status', ['pending', 'in_transit', 'completed', 'cancelled'])
-                ->default('pending');
+            $table->tinyInteger('status')->default(1); // 1: pending, 2: in_transit, 3: completed, 4: cancelled
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamp('transferred_at')->nullable();

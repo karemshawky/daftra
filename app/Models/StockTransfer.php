@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\StockTransferStatus;
+use App\Filters\StockTransferFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,22 +12,19 @@ class StockTransfer extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = 'pending';
-    const STATUS_IN_TRANSIT = 'in_transit';
-    const STATUS_COMPLETED = 'completed';
-    const STATUS_CANCELLED = 'cancelled';
-
     protected $guarded = [];
 
     protected $casts = [
         'quantity' => 'integer',
-        'transferred_at' => 'datetime'
+        'transferred_at' => 'datetime',
+        'status' => StockTransferStatus::class,
     ];
 
     protected static function booted()
     {
         static::creating(function ($transfer) {
             $transfer->transfer_number = 'TR-' . date('Ymd') . '-' . str_pad(random_int(1, 9999), 4, '0', STR_PAD_LEFT);
+            $transfer->created_by = auth()->id();
         });
     }
 
@@ -52,5 +51,15 @@ class StockTransfer extends Model
     public function scopeStatus($query, $status)
     {
         return $query->where('status', $status);
+    }
+
+    public static function listStockTransfer(StockTransferFilter $filters, object $request)
+    {
+        $query = self::with(['fromWarehouse', 'toWarehouse', 'inventoryItem', 'createdBy']);
+
+        return $filters->apply($query, $request)
+            ->latest()
+            ->paginate()
+            ->withQueryString();
     }
 }

@@ -9,10 +9,11 @@ use App\Http\Resources\StockResource;
 use App\Http\Resources\WarehouseResource;;
 
 use App\Http\Requests\WarehouseInventoryRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class WarehouseController extends Controller
 {
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         $warehouses = Warehouse::active()
             ->paginate()->withQueryString();
@@ -20,12 +21,12 @@ class WarehouseController extends Controller
         return WarehouseResource::collection($warehouses);
     }
 
-    public function show(Warehouse $warehouse)
+    public function show(Warehouse $warehouse): WarehouseResource
     {
         return WarehouseResource::make($warehouse);
     }
 
-    public function inventory(Warehouse $warehouse, WarehouseStockFilter $filters, WarehouseInventoryRequest $request)
+    public function inventory(Warehouse $warehouse, WarehouseStockFilter $filters, WarehouseInventoryRequest $request): AnonymousResourceCollection
     {
         $inventory = Stock::getWarehouseInventory($warehouse, $filters, $request);
 

@@ -10,10 +10,11 @@ use App\Http\Requests\FilterInventoryItem;
 use App\Http\Resources\InventoryItemResource;
 use App\Http\Requests\StoreInventoryItemRequest;
 use App\Http\Requests\UpdateInventoryItemRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class InventoryItemController extends Controller
 {
-    public function index(InventoryItemFilter $filters, FilterInventoryItem $request)
+    public function index(InventoryItemFilter $filters, FilterInventoryItem $request) : AnonymousResourceCollection
     {
         $inventoryItem = InventoryItem::filter($filters, $request);
 

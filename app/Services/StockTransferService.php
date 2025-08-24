@@ -1,12 +1,15 @@
 <?php
 
+namespace App\Services;
+
 use App\Models\Stock;
 use App\Models\StockTransfer;
+use App\Enums\StockTransferStatus;
 use Illuminate\Support\Facades\DB;
 
 class StockTransferService
 {
-    
+
     public function transferStock(array $data): StockTransfer
     {
         return DB::transaction(function () use ($data) {
@@ -53,7 +56,7 @@ class StockTransferService
             $destStock->save();
 
             // Update transfer status
-            $transfer->status = StockTransfer::STATUS_COMPLETED;
+            $transfer->status = StockTransferStatus::Completed;
             $transfer->transferred_at = now();
             $transfer->save();
 
@@ -64,7 +67,7 @@ class StockTransferService
     public function cancelTransfer(StockTransfer $transfer): bool
     {
         return DB::transaction(function () use ($transfer) {
-            if ($transfer->status !== StockTransfer::STATUS_PENDING) {
+            if ($transfer->status !== StockTransferStatus::Pending) {
                 return false;
             }
 
@@ -77,7 +80,7 @@ class StockTransferService
             $sourceStock->release($transfer->quantity);
 
             // Update transfer status
-            $transfer->status = StockTransfer::STATUS_CANCELLED;
+            $transfer->status = StockTransferStatus::Cancelled;
             $transfer->save();
 
             return true;

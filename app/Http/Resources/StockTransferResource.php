@@ -21,17 +21,13 @@ class StockTransferResource extends JsonResource
             'to_warehouse' => new WarehouseResource($this->whenLoaded('toWarehouse')),
             'item' => new InventoryItemResource($this->whenLoaded('inventoryItem')),
             'quantity' => $this->quantity,
-            'status' => $this->status,
+            'status_id' => $this->status,
+            'status' => $this->status->asAString(),
             'notes' => $this->notes,
-            'created_by' => $this->whenLoaded('createdBy', function () {
-                return [
-                    'id' => $this->createdBy->id,
-                    'name' => $this->createdBy->name,
-                ];
-            }),
-            'transferred_at' => $this->transferred_at?->toISOString(),
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
+            'created_by' => $this->whenLoaded('createdBy', UserResource::make($this->createdBy)),
+            'transferred_at' => $this->transferred_at?->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }
