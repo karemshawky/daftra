@@ -26,8 +26,6 @@ class LoginController extends Controller
 
         $user = User::where('email', $request['email'])->firstOrFail();
 
-        // $this->checkUserStatus($user);
-
         return $this->responseUserData($user);
     }
 
@@ -40,9 +38,19 @@ class LoginController extends Controller
     public function responseUserData($user): JsonResponse
     {
         return response()->json([
-            'access_token' => $user->createToken('authToken')->plainTextToken,
+            'access_token' => $user->createToken('api', ['transfers:create'])->plainTextToken,
             'user' => UserResource::make($user),
         ]);
+    }
+
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me(): JsonResponse
+    {
+        return response()->json(['data' => UserResource::make(auth()->user())]);
     }
 
     /**
