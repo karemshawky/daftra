@@ -33,7 +33,7 @@ class InventoryItem extends Model
     }
 
     public function scopeFilter(Builder $query, InventoryItemFilter $filters, FilterInventoryItem $request)
-    {   
+    {
         return $filters->apply($query, $request)
             ->latest()
             ->paginate()

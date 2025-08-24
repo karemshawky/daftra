@@ -26,8 +26,8 @@ class InventoryItemResource extends JsonResource
             'min_stock_level' => $this->min_stock_level,
             'is_active' => $this->is_active,
             // 'total_stock' => $this->when($this->stocks_count !== null, $this->stocks_count),
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }

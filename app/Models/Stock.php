@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Cache;
+use App\Filters\Warehouse\StockFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -91,33 +92,25 @@ class Stock extends Model
         );
     }
 
-    // public function getWarehouseInventory(int $warehouseId, array $filters = [])
-    // {
-    //     $cacheKey = "warehouse_{$warehouseId}_inventory_" . md5(serialize($filters));
+    public static function getWarehouseInventory(Warehouse $warehouse, StockFilter $filters, object $request)
+    {
+        $cacheKey = "warehouse_{$warehouse->id}_inventory_" . md5(serialize($filters));
 
-    //     return Cache::remember($cacheKey, 300, function () use ($warehouseId, $filters) {
-    //         $query = Stock::with(['inventoryItem'])
-    //             ->where('warehouse_id', $warehouseId)
-    //             ->where('quantity', '>', 0);
+        return Cache::remember($cacheKey, 300, function () use ($warehouse, $filters, $request) {
 
-    //         // if (!empty($filters['category'])) {
-    //         //     $query->whereHas('inventoryItem', function ($q) use ($filters) {
-    //         //         $q->where('category', $filters['category']);
-    //         //     });
-    //         // }
+        $query = Stock::with(['inventoryItem'])
+            ->where('warehouse_id', $warehouse->id)
+            ->where('quantity', '>', 0);
 
-    //         if (!empty($filters['min_price']) || !empty($filters['max_price'])) {
-    //             $query->whereHas('inventoryItem', function ($q) use ($filters) {
-    //                 $q->priceRange($filters['min_price'] ?? null, $filters['max_price'] ?? null);
-    //             });
-    //         }
+        return $filters->apply($query, $request)
+            ->latest()
+            ->paginate()
+            ->withQueryString();
+        });
+    }
 
-    //         return $query->paginate($filters['per_page'] ?? 15);
-    //     });
-    // }
-
-    // public function clearWarehouseCache(int $warehouseId): void
-    // {
-    //     Cache::tags(["warehouse_{$warehouseId}"])->flush();
-    // }
+    public function clearWarehouseCache(int $warehouseId): void
+    {
+        Cache::tags(["warehouse_{$warehouseId}"])->flush();
+    }
 }

@@ -8,7 +8,7 @@ abstract class AbstractBaseFilter
 {
     protected $builder;
 
-    public function __construct(?Builder $builder)
+    public function __construct(?Builder $builder = null)
     {
         $this->builder = $builder;
     }

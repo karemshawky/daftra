@@ -16,6 +16,8 @@ class InventoryItemController extends Controller
     public function index(InventoryItemFilter $filters, FilterInventoryItem $request)
     {
         $inventoryItem = InventoryItem::filter($filters, $request);
+        
+        $inventoryItem->loadCount('stocks');
 
         return InventoryItemResource::collection($inventoryItem);
     }
@@ -24,9 +26,7 @@ class InventoryItemController extends Controller
     {
         InventoryItem::create($request->validated());
 
-        return response()->json([
-            'message' => 'Inventory item created successfully'
-        ], JsonResponse::HTTP_CREATED);
+        return response()->json(['message' => 'Inventory item created successfully'], JsonResponse::HTTP_CREATED);
     }
 
     public function show(InventoryItem $inventoryItem): InventoryItemResource
@@ -40,10 +40,7 @@ class InventoryItemController extends Controller
     {
         $inventoryItem->update($request->validated());
 
-        return response()->json([
-            'data' => new InventoryItemResource($inventoryItem),
-            'message' => 'Inventory item updated successfully',
-        ], JsonResponse::HTTP_OK);
+        return response()->json(['message' => 'Inventory item updated successfully'], JsonResponse::HTTP_OK);
     }
 
     public function destroy(InventoryItem $inventoryItem): Response
