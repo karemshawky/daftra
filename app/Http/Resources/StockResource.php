@@ -16,6 +16,8 @@ class StockResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'warehouse_id' => $this->warehouse_id,
+            // 'inventory_item_id' => $this->inventory_item_id,
             'warehouse' => new WarehouseResource($this->whenLoaded('warehouse')),
             'item' => new InventoryItemResource($this->whenLoaded('inventoryItem')),
             'quantity' => $this->quantity,

@@ -21,7 +21,6 @@ Route::name('api.')->group(function () {
 
         // Inventory Items
         Route::apiResource('inventory-items', InventoryItemController::class);
-        // Route::get('/inventory-items', [InventoryItemController::class, 'index']);
 
         // Stock
         Route::get('/stocks', [StockController::class, 'index']);

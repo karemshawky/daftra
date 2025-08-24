@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filters\Warehouse;
+namespace App\Filters;
 
 use App\Filters\AbstractBaseFilter;
 
-class StockFilter extends AbstractBaseFilter
+class WarehouseStockFilter extends AbstractBaseFilter
 {
     public function category_id($search)
     {

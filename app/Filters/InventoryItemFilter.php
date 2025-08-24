@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters\InventoryItem;
+namespace App\Filters;
 
 use App\Filters\AbstractBaseFilter;
 

@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\InventoryItem;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use App\Filters\InventoryItemFilter;
 use App\Http\Requests\FilterInventoryItem;
 use App\Http\Resources\InventoryItemResource;
 use App\Http\Requests\StoreInventoryItemRequest;
 use App\Http\Requests\UpdateInventoryItemRequest;
-use App\Filters\InventoryItem\InventoryItemFilter;
 
 class InventoryItemController extends Controller
 {
     public function index(InventoryItemFilter $filters, FilterInventoryItem $request)
     {
         $inventoryItem = InventoryItem::filter($filters, $request);
-        
+
         $inventoryItem->loadCount('stocks');
 
         return InventoryItemResource::collection($inventoryItem);

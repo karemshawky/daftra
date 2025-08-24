@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Filters\StockFilter;
+use App\Events\LowStockDetected;
+use App\Filters\WarehouseStockFilter;
 use Illuminate\Support\Facades\Cache;
-use App\Filters\Warehouse\StockFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -92,25 +94,37 @@ class Stock extends Model
         );
     }
 
-    public static function getWarehouseInventory(Warehouse $warehouse, StockFilter $filters, object $request)
+    public static function getWarehouseInventory(Warehouse $warehouse, WarehouseStockFilter $filters, object $request)
     {
         $cacheKey = "warehouse_{$warehouse->id}_inventory_" . md5(serialize($filters));
 
         return Cache::remember($cacheKey, 300, function () use ($warehouse, $filters, $request) {
 
-        $query = Stock::with(['inventoryItem'])
-            ->where('warehouse_id', $warehouse->id)
-            ->where('quantity', '>', 0);
+            $query = self::with(['inventoryItem'])
+                ->where('warehouse_id', $warehouse->id)
+                ->where('quantity', '>', 0);
 
-        return $filters->apply($query, $request)
-            ->latest()
-            ->paginate()
-            ->withQueryString();
+            return $filters->apply($query, $request)
+                ->latest()
+                ->paginate()
+                ->withQueryString();
         });
     }
 
     public function clearWarehouseCache(int $warehouseId): void
     {
         Cache::tags(["warehouse_{$warehouseId}"])->flush();
+    }
+
+    ///////////////////////////////////////
+
+    public static function listStocks(StockFilter $filters, object $request)
+    {
+        $query = self::with('inventoryItem');   // warehouse: if needed
+
+        return $filters->apply($query, $request)
+            ->latest()
+            ->paginate()
+            ->withQueryString();
     }
 }

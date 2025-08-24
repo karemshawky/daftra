@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Filters\InventoryItemFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\FilterInventoryItem;
-use App\Filters\InventoryItem\InventoryItemFilter;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
