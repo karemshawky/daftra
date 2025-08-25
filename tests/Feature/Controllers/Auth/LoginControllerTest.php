@@ -69,20 +69,22 @@ class LoginControllerTest extends TestCase
             'password' => 'password',
         ]);
 
-        $token = $user->createToken('authToken')->plainTextToken;
+        $token = $user->createToken('api', ['transfers:create'])->plainTextToken;
 
         // Make a login request with valid credentials
         $response = $this->getJson(
-            '/api/user',
+            '/api/me',
             headers: ['Authorization' => 'Bearer ' . $token]
         );
 
         // Assert the response is successful and contains the expected data
         $response->assertOk()
             ->assertJsonStructure([
-                'id',
-                'name',
-                'email',
+                'data' => [
+                    'id',
+                    'name',
+                    'email',
+                ]
             ]);
     }
 }

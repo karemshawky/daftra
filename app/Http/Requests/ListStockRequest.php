@@ -23,7 +23,7 @@ class ListStockRequest extends FormRequest
     {
         return [
             'warehouse_id' => 'nullable|exists:warehouses,id',
-            // 'low_stock' => 'nullable|boolean',       // TODO: fix
+            'low_stock' => 'nullable|boolean',
         ];
     }
 }

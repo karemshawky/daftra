@@ -7,7 +7,6 @@ use App\Models\Warehouse;
 use App\Filters\WarehouseStockFilter;
 use App\Http\Resources\StockResource;
 use App\Http\Resources\WarehouseResource;;
-
 use App\Http\Requests\WarehouseInventoryRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
