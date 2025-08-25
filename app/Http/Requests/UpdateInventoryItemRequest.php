@@ -29,7 +29,6 @@ class UpdateInventoryItemRequest extends FormRequest
             'cost' => 'nullable|numeric|min:0',
             'category' => 'nullable|string|max:100',
             'unit_of_measure' => 'nullable|string|max:50',
-            'min_stock_level' => 'nullable|integer|min:0',
         ];
     }
 }

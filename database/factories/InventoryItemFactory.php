@@ -29,7 +29,6 @@ class InventoryItemFactory extends Factory
             'cost' => fake()->randomFloat(2, 5, 500),
             'category_id' => fake()->numberBetween(1, 5),
             'unit_of_measure' => fake()->randomElement($units),
-            'min_stock_level' => fake()->numberBetween(5, 50),
             'is_active' => true,
         ];
     }

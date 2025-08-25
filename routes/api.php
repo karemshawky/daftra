@@ -30,10 +30,8 @@ Route::name('api.')->group(function () {
         Route::get('/stock-transfers', [StockTransferController::class, 'index']);
         Route::post('/stock-transfers', [StockTransferController::class, 'store']);
         Route::get('/stock-transfers/{transfer}', [StockTransferController::class, 'show']);
-        Route::post('/stock-transfers/{transfer}/complete', [StockTransferController::class, 'complete']);
-        Route::post('/stock-transfers/{transfer}/cancel', [StockTransferController::class, 'cancel']);
 
         // Global inventory search
-        // Route::get('/inventory', [InventoryItemController::class, 'index']);
+        Route::get('/inventory', [InventoryItemController::class, 'index']);
     });
 });

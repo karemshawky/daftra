@@ -35,8 +35,8 @@ class DatabaseSeeder extends Seeder
                 Stock::create([
                     'warehouse_id' => $warehouse->id,
                     'inventory_item_id' => $item->id,
+                    'min_stock_level' => rand(20, 100),
                     'quantity' => rand(10, 200),
-                    'reserved_quantity' => 0,
                 ]);
             }
         }

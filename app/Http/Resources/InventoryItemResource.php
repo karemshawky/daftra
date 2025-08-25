@@ -23,7 +23,7 @@ class InventoryItemResource extends JsonResource
             'cost' => $this->cost,
             'category_id' => $this->category_id,
             'unit_of_measure' => $this->unit_of_measure,
-            'min_stock_level' => $this->min_stock_level,
+            // 'min_stock_level' => $this->min_stock_level,
             'is_active' => $this->is_active,
             // 'total_stock' => $this->when($this->stocks_count !== null, $this->stocks_count),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),

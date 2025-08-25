@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('cost', 10, 2)->nullable();
             $table->tinyInteger('category_id')->default(1);
             $table->string('unit_of_measure')->default('piece');
-            $table->integer('min_stock_level')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 

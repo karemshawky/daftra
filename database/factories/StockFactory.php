@@ -24,8 +24,8 @@ class StockFactory extends Factory
         return [
             'warehouse_id' => Warehouse::factory(),
             'inventory_item_id' => InventoryItem::factory(),
+            'min_stock_level' => fake()->numberBetween(5, 50),
             'quantity' => fake()->numberBetween(0, 500),
-            'reserved_quantity' => 0,
         ];
     }
 }

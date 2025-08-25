@@ -25,18 +25,11 @@ class StockController extends Controller
             'quantity' => 'required|integer|min:0',
         ]);
 
-        $oldQuantity = $stock->quantity;
-
         $stock->update(['quantity' => $validated['quantity']]);
 
         return response()->json([
             'data' =>  StockResource::make($stock->load(['warehouse', 'inventoryItem'])),
             'message' => 'Stock updated successfully',
-            'changes' => [
-                'previous_quantity' => $oldQuantity,
-                'new_quantity' => $stock->quantity,
-                'difference' => $stock->quantity - $oldQuantity
-            ]
         ], JsonResponse::HTTP_OK);
     }
 }

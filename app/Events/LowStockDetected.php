@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\InventoryItem;
 use App\Models\Stock;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -18,7 +19,7 @@ class LowStockDetected
     /**
      * Create a new event instance.
      */
-    public function __construct(public Stock $stock) {}
+    public function __construct(public Stock $stock, public InventoryItem $InventoryItem) {}
 
     /**
      * Get the channels the event should broadcast on.

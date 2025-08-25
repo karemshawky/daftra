@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
             $table->foreignId('inventory_item_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(0);
-            $table->integer('reserved_quantity')->default(0);
+            $table->integer('min_stock_level')->default(0);
             $table->timestamps();
 
             $table->unique(['warehouse_id', 'inventory_item_id']);

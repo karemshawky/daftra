@@ -29,7 +29,6 @@ class StoreInventoryItemRequest extends FormRequest
             'cost' => 'nullable|numeric|min:0',
             'category_id' => 'nullable|string|max:100',
             'unit_of_measure' => 'nullable|string|max:50',
-            'min_stock_level' => 'nullable|integer|min:0',
         ];
     }
 }

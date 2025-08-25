@@ -20,9 +20,8 @@ class StockResource extends JsonResource
             // 'inventory_item_id' => $this->inventory_item_id,
             'warehouse' => new WarehouseResource($this->whenLoaded('warehouse')),
             'item' => new InventoryItemResource($this->whenLoaded('inventoryItem')),
+            'min_stock_level' => $this->min_stock_level,
             'quantity' => $this->quantity,
-            'reserved_quantity' => $this->reserved_quantity,
-            'available_quantity' => $this->available_quantity,
             'updated_at' => $this->updated_at->toISOString(),
         ];
     }
