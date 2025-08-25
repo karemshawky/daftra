@@ -55,6 +55,13 @@ class Stock extends Model
         }
     }
 
+    /**
+     * Reserves a certain quantity of stock from this stock item.
+     * This will increase the reserved quantity by the given amount.
+     * If the available quantity is not enough to fulfill the request, this method will return false.
+     * @param int $quantity The quantity of stock to reserve.
+     * @return bool Whether the stock was successfully reserved.
+     */
     public function reserve(int $quantity): bool
     {
         if ($this->available_quantity >= $quantity) {
@@ -64,6 +71,13 @@ class Stock extends Model
         return false;
     }
 
+    /**
+     * Releases a certain quantity of stock from this stock item.
+     * This will decrease the reserved quantity by the given amount.
+     * The reserved quantity will never go below 0.
+     * @param int $quantity The quantity of stock to release.
+     * @return bool Whether the stock was successfully released.
+     */
     public function release(int $quantity): bool
     {
         $this->reserved_quantity = max(0, $this->reserved_quantity - $quantity);
@@ -73,16 +87,16 @@ class Stock extends Model
     ///////////////////////////////////////
 
 
-    public function getStock(int $warehouseId, int $itemId): ?Stock
+    public static function getStock(int $warehouseId, int $itemId): ?Stock
     {
-        return Stock::where('warehouse_id', $warehouseId)
+        return self::where('warehouse_id', $warehouseId)
             ->where('inventory_item_id', $itemId)
             ->first();
     }
 
     public function getOrCreateStock(int $warehouseId, int $itemId): Stock
     {
-        return Stock::firstOrCreate(
+        return self::firstOrCreate(
             [
                 'warehouse_id' => $warehouseId,
                 'inventory_item_id' => $itemId

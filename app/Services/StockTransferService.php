@@ -6,10 +6,24 @@ use App\Models\Stock;
 use App\Models\StockTransfer;
 use App\Enums\StockTransferStatus;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\InsufficientStockException;
 
 class StockTransferService
 {
 
+    /**
+     * Transfers stock from one warehouse to another.
+     *
+     * @param array $data Stock transfer data.
+     *  - from_warehouse_id: ID of the source warehouse.
+     *  - to_warehouse_id: ID of the destination warehouse.
+     *  - inventory_item_id: ID of the inventory item to transfer.
+     *  - quantity: Quantity of stock to transfer.
+     *
+     * @return StockTransfer The stock transfer record.
+     *
+     * @throws InsufficientStockException If the source warehouse does not have enough stock.
+     */
     public function transferStock(array $data): StockTransfer
     {
         return DB::transaction(function () use ($data) {
@@ -33,6 +47,14 @@ class StockTransferService
         });
     }
 
+    /**
+     * Complete a stock transfer by deducting the transferred quantity from the source warehouse
+     * and adding it to the destination warehouse.
+     *
+     * @param StockTransfer $transfer The stock transfer record.
+     *
+     * @return bool Whether the operation was successful.
+     */
     public function completeTransfer(StockTransfer $transfer): bool
     {
         return DB::transaction(function () use ($transfer) {
@@ -64,6 +86,13 @@ class StockTransferService
         });
     }
 
+    /**
+     * Cancel a pending stock transfer by releasing the reserved stock back to the source warehouse.
+     *
+     * @param StockTransfer $transfer The stock transfer record.
+     *
+     * @return bool Whether the operation was successful.
+     */
     public function cancelTransfer(StockTransfer $transfer): bool
     {
         return DB::transaction(function () use ($transfer) {

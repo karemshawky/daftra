@@ -7,9 +7,10 @@ use Illuminate\Http\JsonResponse;
 use App\Enums\StockTransferStatus;
 use App\Filters\StockTransferFilter;
 use App\Services\StockTransferService;
-use App\Http\Requests\StockTransferRequest;
 use App\Http\Resources\StockTransferResource;
+use App\Exceptions\InsufficientStockException;
 use App\Http\Requests\ListStockTransferRequest;
+use App\Http\Requests\StoreStockTransferRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class StockTransferController extends Controller
@@ -23,23 +24,19 @@ class StockTransferController extends Controller
         return StockTransferResource::collection($transfers);
     }
 
-    public function store(StockTransferRequest $request)
+    public function store(StoreStockTransferRequest $request): JsonResponse
     {
         try {
-            $data = $request->validated();
-            $data['created_by'] = $request->user()->id;
+            $transfer = $this->transferService->transferStock($request->validated());
 
-            $transfer = $this->transferService->transferStock($data);
-            $transfer->load(['fromWarehouse', 'toWarehouse', 'inventoryItem', 'createdBy']);
+            // $transfer->load(['fromWarehouse', 'toWarehouse', 'inventoryItem', 'createdBy']);
 
-            return response()->json([
-                'message' => 'Stock transfer initiated successfully'
-            ], JsonResponse::HTTP_CREATED);
+            return response()->json(['message' => 'Stock transfer initiated successfully'], JsonResponse::HTTP_CREATED);
         } catch (InsufficientStockException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
                 'errors' => ['quantity' => [$e->getMessage()]]
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
