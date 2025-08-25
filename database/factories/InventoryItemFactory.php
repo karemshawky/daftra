@@ -23,7 +23,7 @@ class InventoryItemFactory extends Factory
 
         return [
             'sku' => strtoupper(fake()->unique()->lexify('???-####')),
-            'name' => fake()->name(),
+            'name' => fake()->word(),
             'description' => fake()->sentence(10),
             'price' => fake()->randomFloat(2, 10, 1000),
             'cost' => fake()->randomFloat(2, 5, 500),

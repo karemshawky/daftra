@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use App\Enums\StockTransferStatus;
 use App\Filters\StockTransferFilter;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class StockTransfer extends Model
     protected static function booted()
     {
         static::creating(function ($transfer) {
-            $transfer->transfer_number = 'TR-' . date('Ymd') . '-' . str_pad(random_int(1, 9999), 4, '0', STR_PAD_LEFT);
+            $transfer->transfer_number = 'TR-' . Str::uuid();
             $transfer->created_by = auth()->id();
         });
     }

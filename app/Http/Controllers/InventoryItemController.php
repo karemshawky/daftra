@@ -21,11 +21,9 @@ class InventoryItemController extends Controller
      * @param  \App\Http\Requests\FilterInventoryItem  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(InventoryItemFilter $filters, FilterInventoryItem $request) : AnonymousResourceCollection
+    public function index(InventoryItemFilter $filters, FilterInventoryItem $request): AnonymousResourceCollection
     {
         $inventoryItem = InventoryItem::filter($filters, $request);
-
-        $inventoryItem->loadCount('stocks');
 
         return InventoryItemResource::collection($inventoryItem);
     }
@@ -51,8 +49,6 @@ class InventoryItemController extends Controller
      */
     public function show(InventoryItem $inventoryItem): InventoryItemResource
     {
-        $inventoryItem->loadCount('stocks');
-
         return InventoryItemResource::make($inventoryItem);
     }
 
@@ -78,7 +74,7 @@ class InventoryItemController extends Controller
      */
     public function destroy(InventoryItem $inventoryItem): Response
     {
-        $inventoryItem->update('is_active', false);
+        $inventoryItem->update(['is_active' => false]);
 
         return response()->noContent();
     }

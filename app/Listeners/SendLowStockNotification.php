@@ -30,7 +30,7 @@ class SendLowStockNotification
             'item' => $stock->inventoryItem->name,
             'sku' => $stock->inventoryItem->sku,
             'current_quantity' => $stock->quantity,
-            'min_level' => $stock->inventoryItem->min_stock_level
+            'min_level' => $stock->min_stock_level
         ]);
 
         // In production, send email notification

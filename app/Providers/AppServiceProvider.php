@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\LowStockDetected;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use App\Listeners\SendLowStockNotification;
 // use Illuminate\Database\Console\Seeds\SeedCommand;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configureUrl();
+
+        Event::listen(
+            LowStockDetected::class,
+            SendLowStockNotification::class,
+        );
     }
 
     /**

@@ -6,12 +6,21 @@ use App\Models\Stock;
 use App\Models\InventoryItem;
 use App\Models\StockTransfer;
 use App\Events\LowStockDetected;
-use Illuminate\Http\JsonResponse;
 use App\Enums\StockTransferStatus;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\InsufficientStockException;
 
 class StockTransferService
 {
+    /**
+     * Transfers stock between warehouses in a transactional manner.
+     *
+     * This method will throw InsufficientStockException if the source warehouse does not have enough stock.
+     *
+     * @param array $data
+     * @return \App\Models\StockTransfer
+     * @throws \App\Exceptions\InsufficientStockException
+     */
     public function transferStock(array $data)
     {
         return DB::transaction(
@@ -28,30 +37,27 @@ class StockTransferService
                 $fromStock = Stock::getStock($fromId, $itemId);
 
                 if (!$fromStock || $fromStock->quantity < $quantity) {
-                    abort(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Insufficient stock in source warehouse.');
+                    throw new InsufficientStockException('Insufficient stock in source warehouse.');
                 }
 
                 $toStock = Stock::getOrCreateStock($toId, $itemId);
-
-                if (!$toStock) {
-                    $toStock = Stock::create([
-                        'inventory_item_id' => $itemId,
-                        'warehouse_id' => $toId,
-                        'quantity' => 0,
-                    ]);
-                }
 
                 // Move quantities
                 $fromStock->decrement('quantity', $quantity);
                 $toStock->increment('quantity', $quantity);
 
-                // Invalidate cached inventory for both warehouses
-                Stock::clearWarehouseCache($fromId);
-                Stock::clearWarehouseCache($toId);
+                // Refresh fromStock to get the updated quantity
+                $fromStock->refresh();
 
-                // Fire low stock event if below threshold
+                // Invalidate cached inventory for both warehouses
+                // Fire low stock event if below threshold for source warehouse
                 if ($fromStock->quantity < $fromStock->min_stock_level) {
-                    event(new LowStockDetected($fromStock, $item));
+                    event(new LowStockDetected($fromStock));
+                }
+
+                // Fire low stock event if below threshold for destination warehouse
+                if ($toStock->quantity < $toStock->min_stock_level) {
+                    event(new LowStockDetected($toStock));
                 }
 
                 return StockTransfer::create([
@@ -61,7 +67,7 @@ class StockTransferService
                     'quantity' => $quantity,
                     'status' => StockTransferStatus::Completed,
                     'notes' => $data['notes'] ?? null,
-                    'transferred_at'=> now(),
+                    'transferred_at' => now(),
                 ]);
             }
         );

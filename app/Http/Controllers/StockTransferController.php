@@ -18,10 +18,10 @@ class StockTransferController extends Controller
      * Returns a paginated list of stock transfers with their status, source warehouse,
      * destination warehouse, inventory item, quantity, and creation date.
      *
-     * @param ListStockTransferRequest $request The request object.
-     * @param StockTransferFilter $filters The filters to apply to the query.
+     * @param ListStockTransferRequest $request
+     * @param StockTransferFilter $filters
      *
-     * @return AnonymousResourceCollection The list of stock transfers.
+     * @return AnonymousResourceCollection
      */
     public function index(ListStockTransferRequest $request, StockTransferFilter $filters): AnonymousResourceCollection
     {
@@ -59,9 +59,9 @@ class StockTransferController extends Controller
      * Returns a single stock transfer by ID, including its status, source warehouse,
      * destination warehouse, inventory item, quantity, and creation date.
      *
-     * @param StockTransfer $transfer The stock transfer to retrieve.
+     * @param StockTransfer $stockTransfer
      *
-     * @return JsonResponse The stock transfer.
+     * @return JsonResponse
      */
     public function show(StockTransfer $stockTransfer): JsonResponse
     {
