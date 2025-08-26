@@ -6,15 +6,19 @@ use App\Models\InventoryItem;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Filters\InventoryItemFilter;
+use Dedoc\Scramble\Attributes\Group;
 use App\Http\Requests\FilterInventoryItem;
 use App\Http\Resources\InventoryItemResource;
 use App\Http\Requests\StoreInventoryItemRequest;
 use App\Http\Requests\UpdateInventoryItemRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+#[Group(name: 'Inventory Item', weight: 3)]
 class InventoryItemController extends Controller
 {
     /**
+     * List inventory items.
+     *
      * Returns a paginated list of inventory items with their count of stocks.
      *
      * @param  \App\Filters\InventoryItemFilter  $filters
@@ -29,6 +33,8 @@ class InventoryItemController extends Controller
     }
 
     /**
+     * Store a new inventory item.
+     *
      * Stores a newly created inventory item in storage.
      *
      * @param  \App\Http\Requests\StoreInventoryItemRequest  $request
@@ -42,6 +48,8 @@ class InventoryItemController extends Controller
     }
 
     /**
+     * Show inventory item.
+     *
      * Display the specified inventory item.
      *
      * @param  \App\Models\InventoryItem  $inventoryItem
@@ -53,6 +61,8 @@ class InventoryItemController extends Controller
     }
 
     /**
+     * Update inventory item.
+     *
      * Update the specified inventory item in storage.
      *
      * @param  \App\Http\Requests\UpdateInventoryItemRequest  $request
@@ -67,7 +77,9 @@ class InventoryItemController extends Controller
     }
 
     /**
-     * Disable the specified inventory item.
+     * Delete inventory item.
+     *
+     * Delete the specified inventory item.
      *
      * @param  \App\Models\InventoryItem  $inventoryItem
      * @return \Illuminate\Http\Response

@@ -1,0 +1,23 @@
+{
+	"id": "f43e6d96-e80d-4f7e-877d-7de9758cd9b5",
+	"name": "Daftra",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://daftra.localhost/api",
+			"type": "default",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "1|eI4O2Yy77j5PuAkrEJWSUj2JuWAQrsybQ3rANDvj7cc8ecbb",
+			"type": "default",
+			"description": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-08-26T00:37:39.656Z",
+	"_postman_exported_using": "Postman/11.60.0"
+}

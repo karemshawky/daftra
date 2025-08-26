@@ -6,7 +6,7 @@
 **System Requirements**
 -----------------------
 
-* PHP 8.2 or higher
+* PHP 8.2
 * MySQL
 * Laravel 12
 * Composer installed on your system
@@ -47,6 +47,12 @@ php artisan key:generate
 ```
 
 ### Step 5: Change some values of `.env` file:
+
+```bash
+APP_URL=<Base_URL>
+```
+### And for Database
+
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -78,7 +84,7 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-### Step 8: Run unit test
+### Step 8: Run unit tests
 
 ```bash
 php artisan test
@@ -90,8 +96,26 @@ php artisan test
 php artisan test --parallel
 ```
 
-### And check for  errors
+### Step 9: Run Static Analysis with Larastan
 
 ```bash
 ./vendor/bin/phpstan analyse
+```
+
+### Finally, to hit documentation page change the `<Base_URL>` by yours and visit:
+
+```bash
+<Base_URL>/docs/api/
+```
+
+### Import API Documentation and Environment in Postman
+
+## Alternative
+1. Import `Daftra.documentation.json` file to your postman application.
+2. Import the `Daftra.environment.json` file into Postman, then edit the environment information from the sidebar's environment tab as needed.
+
+## Credentials
+```bash
+email:admin@daftra.com
+password:password@123
 ```

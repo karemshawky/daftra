@@ -14,6 +14,7 @@ Route::name('api.')->group(function () {
     Route::get('/me', [Auth\LoginController::class, 'me'])->middleware('auth:sanctum');
 
     Route::middleware(['auth:sanctum'])->group(function () {
+
         // Warehouses
         Route::get('/warehouses', [WarehouseController::class, 'index']);
         Route::get('/warehouses/{warehouse}', [WarehouseController::class, 'show']);

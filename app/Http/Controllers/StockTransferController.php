@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StockTransfer;
 use Illuminate\Http\JsonResponse;
 use App\Filters\StockTransferFilter;
+use Dedoc\Scramble\Attributes\Group;
 use App\Services\StockTransferService;
 use App\Http\Resources\StockTransferResource;
 use App\Exceptions\InsufficientStockException;
@@ -12,9 +13,12 @@ use App\Http\Requests\ListStockTransferRequest;
 use App\Http\Requests\StoreStockTransferRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+#[Group(name: 'Stock Transfers', weight: 5)]
 class StockTransferController extends Controller
 {
     /**
+     * List stock transfers.
+     *
      * Returns a paginated list of stock transfers with their status, source warehouse,
      * destination warehouse, inventory item, quantity, and creation date.
      *
@@ -31,7 +35,10 @@ class StockTransferController extends Controller
     }
 
     /**
-     * Initiates a stock transfer.
+     * Create a new stock transfer.
+     *
+     * Creates a new stock transfer request from one warehouse to another for a specific
+     * inventory item.
      *
      * @param StockTransferService $stockTransferService
      * @param StoreStockTransferRequest $request
@@ -56,6 +63,8 @@ class StockTransferController extends Controller
     }
 
     /**
+     * Show stock transfer.
+     * 
      * Returns a single stock transfer by ID, including its status, source warehouse,
      * destination warehouse, inventory item, quantity, and creation date.
      *

@@ -6,9 +6,11 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Auth\LoginRequest;
 
+#[Group(name: 'Auth / Login', weight: 1)]
 class LoginController extends Controller
 {
     /**
