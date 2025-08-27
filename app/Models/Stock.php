@@ -76,8 +76,8 @@ class Stock extends Model
         });
     }
 
-    public static function clearWarehouseCache(int $warehouseId): void
+    public static function clearWarehousesCache(int $warehouseFrom, int $warehouseTo): void
     {
-        Cache::tags(["warehouse_{$warehouseId}"])->flush();
+        Cache::tags(["warehouse_{$warehouseFrom}", "warehouse_{$warehouseTo}"])->flush();
     }
 }

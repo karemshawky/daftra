@@ -50,6 +50,8 @@ class StockTransferService
                 $fromStock->refresh();
 
                 // Invalidate cached inventory for both warehouses
+                Stock::clearWarehousesCache($fromId, $toId);
+
                 // Fire low stock event if below threshold for source warehouse
                 if ($fromStock->quantity < $fromStock->min_stock_level) {
                     event(new LowStockDetected($fromStock));

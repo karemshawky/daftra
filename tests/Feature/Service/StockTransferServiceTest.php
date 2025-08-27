@@ -54,8 +54,7 @@ class StockTransferServiceTest extends TestCase
         $this->assertEquals($data['to_warehouse_id'], $result->to_warehouse_id);
 
         // Assert Cache is cleared
-        $this->assertNull(Stock::clearWarehouseCache($this->warehouseFrom->id));
-        $this->assertNull(Stock::clearWarehouseCache($this->warehouseTo->id));
+        $this->assertNull(Stock::clearWarehousesCache($this->warehouseFrom->id, $this->warehouseTo->id));
 
         // Assert stock levels
         $this->assertEquals(10, $fromStock->fresh()->quantity);
